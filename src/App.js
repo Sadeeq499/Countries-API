@@ -1,23 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import MainPage from "./Pages/MainPage";
+import DetailPage from "./Pages/DetailPage";
+import { Route, Routes } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getAllCountries } from "./APIs/CountriesApi";
 
 function App() {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["countries"],
+    queryFn: () => getAllCountries(),
+  });
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Routes>
+        <Route index path="/" element={<MainPage />} />
+        <Route path="/:name" element={<DetailPage data={data} />} />
+      </Routes>
     </div>
   );
 }
